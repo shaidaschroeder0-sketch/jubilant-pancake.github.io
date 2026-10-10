@@ -1,0 +1,119 @@
+
+<div id="game">
+  <h1>🌈 My First Learning Game</h1>
+  <p>Learn, play and have fun!</p>
+  <h2 id="question">Find the red colour!</h2>
+  <div id="choices"></div>
+  <h3 id="message">Tap the right answer!</h3>
+  <p>⭐ Stars: <span id="score">0</span></p>
+  <button onclick="nextQuestion()">Next Question ➜</button>
+</div>
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #fff4c7;
+  text-align: center;
+}
+#game {
+  max-width: 500px;
+  margin: 15px auto;
+  padding: 20px;
+  background: white;
+  border-radius: 25px;
+}
+h1 { color: #7c3aed; font-size: 28px; }
+h2 { color: #222; }
+#choices {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+.choice {
+  font-size: 48px;
+  min-width: 100px;
+  min-height: 90px;
+  border: 3px solid #ddd;
+  border-radius: 18px;
+  background: #fff;
+  cursor: pointer;
+}
+button {
+  font-size: 20px;
+  padding: 14px 20px;
+  margin: 8px;
+  border: 0;
+  border-radius: 15px;
+  background: #7c3aed;
+  color: white;
+}
+#message { color: #15803d; }
+</style>
+
+<script>
+const questions = [
+  {q:"Find the red colour!", a:"🔴", choices:["🔴","🔵","🟡"]},
+  {q:"Which one is a cat?", a:"🐱", choices:["🐶","🐱","🐸"]},
+  {q:"Find the number 2!", a:"2️⃣", choices:["1️⃣","2️⃣","3️⃣"]},
+  {q:"Which one is a banana?", a:"🍌", choices:["🍎","🍇","🍌"]},
+  {q:"Find the letter A!", a:"🅰️", choices:["🅱️","🅰️","©️"]},
+  {q:"Which animal says moo?", a:"🐮", choices:["🐮","🐱","🐟"]},
+  {q:"Find the sun!", a:"☀️", choices:["🌙","⭐","☀️"]},
+  {q:"Which one is a fish?", a:"🐟", choices:["🐦","🐟","🐸"]}
+];
+
+let index = 0;
+let score = 0;
+let answered = false;
+
+function showQuestion() {
+  const q = questions[index];
+  document.getElementById("question").textContent = q.q;
+  document.getElementById("message").textContent =
+    "Tap the right answer!";
+  document.getElementById("choices").innerHTML = "";
+  answered = false;
+
+  q.choices.forEach(choice => {
+    const button = document.createElement("button");
+    button.className = "choice";
+    button.textContent = choice;
+    button.setAttribute("aria-label", choice);
+    button.onclick = () => checkAnswer(choice);
+    document.getElementById("choices").appendChild(button);
+  });
+}
+
+function checkAnswer(choice) {
+  if (answered) return;
+  answered = true;
+
+  if (choice === questions[index].a) {
+    score++;
+    document.getElementById("message").textContent =
+      "🎉 Well done! You got it right!";
+  } else {
+    document.getElementById("message").textContent =
+      "😊 Good try! Let's learn together.";
+  }
+
+  document.getElementById("score").textContent = score;
+}
+
+function nextQuestion() {
+  index++;
+  if (index >= questions.length) {
+    document.getElementById("question").textContent =
+      "🏆 You finished the game!";
+    document.getElementById("choices").innerHTML = "";
+    document.getElementById("message").textContent =
+      "You earned " + score + " stars! Amazing!";
+    return;
+  }
+  showQuestion();
+}
+
+showQuestion();
+</script>
+
